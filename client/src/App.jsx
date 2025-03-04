@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import './App.css'
+import Instructions from './pages/Instructions'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [showInstructions, setShowInstructions] = useState(true);
 
   return (
     <>
-      MASUKKKK
+      <div className="p-4">
+        {showInstructions && <Instructions onClose={() => setShowInstructions(false)} />}
+        <button className="btn btn-secondary" onClick={() => setShowInstructions(true)}>
+          Show Instructions
+        </button>
+      </div>
     </>
   )
 }
-
-export default App
