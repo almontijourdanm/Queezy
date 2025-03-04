@@ -7,6 +7,7 @@ app.use(express.json())
 
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const UserController = require('./controllers/userController');
 const genAI = new GoogleGenerativeAI('AIzaSyD7Uc9NvuPDoi7m6wapcYPvcRRRjr8iTWA');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -15,9 +16,7 @@ app.get('/', (req, res) => {
     res.send('ini homepage')
 })
 
-app.post('/register', (req,res,next) => {
-   res.send('ini register page')
-})
+app.post('/register', UserController.register);
 
 app.post('/login', (req,res,next) => {
     res.send("ini login page")
