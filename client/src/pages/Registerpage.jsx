@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router'
+import { useNavigate, Link } from 'react-router'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useState } from 'react'
@@ -15,9 +15,9 @@ export default function Registerpage() {
     async function handleRegister(event) {
         try {
             event.preventDefault()
-            let { data } = await axios ({
+            let { data } = await axios({
                 method: 'POST',
-                url: 'http://localhost:3001/register',
+                url: 'http://localhost:3000/register',
                 data: formData
             })
 
@@ -40,29 +40,48 @@ export default function Registerpage() {
     return (
         <>
 
-            <div className="hero bg-base-200 min-h-screen">
+            <div className="hero min-h-screen bg-gradient-to-r from-blue-900 via-purple-800 to-purple-600">
                 <div className="hero-content flex-col lg:flex-row-reverse">
-                    <div className="text-center lg:text-left">
-                        <h1 className="text-5xl font-bold">Register now!</h1>
-                        <p className="py-6">
-                            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                            quasi. In deleniti eaque aut repudiandae et a id nisi.
+                    <div className="text-center lg:text-left text-white">
+                        <h1 className="text-5xl font-bold text-cyan-400 drop-shadow-lg">Register Now!</h1>
+                        <p className="py-6 text-gray-200">
+                            Unlock exclusive features and take your experience to the next level.
+                            Join now and be a part of something amazing!
                         </p>
                     </div>
-                    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                    <div className="card w-full max-w-sm shadow-2xl bg-gray-900 border border-gray-700">
                         <div className="card-body">
-                            <fieldset className="fieldset">
-                                <label className="fieldset-label">Email</label>
-                                <input type="email" className="input" placeholder="Email" />
-                                <label className="fieldset-label">Password</label>
-                                <input type="password" className="input" placeholder="Password" />
-                                <div><a className="link link-hover">Forgot password?</a></div>
-                                <button className="btn btn-neutral mt-4">Login</button>
-                            </fieldset>
+
+                            <form onSubmit={handleRegister}>
+                                <fieldset className="fieldset">
+
+                                    <label className="fieldset-label text-gray-300">Username</label>
+                                    <input
+                                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                                        type="text" className="input bg-gray-800 text-white border border-gray-600 focus:border-cyan-400" placeholder="Username" />
+
+                                    <label className="fieldset-label text-gray-300">Email</label>
+                                    <input
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        type="email" className="input bg-gray-800 text-white border border-gray-600 focus:border-cyan-400" placeholder="Email" />
+
+                                    <label className="fieldset-label text-gray-300 mt-4">Password</label>
+                                    <input
+                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                        type="password" className="input bg-gray-800 text-white border border-gray-600 focus:border-magenta-400" placeholder="Password" />
+
+                                    <div className="mt-2">
+                                        <p> Already have an account ? <Link to="/login" className='link link-hover text-cyan-400 hover:text-magenta-400'> Login </Link></p>
+                                    </div>
+
+                                    <button className="btn mt-4 bg-cyan-500 hover:bg-magenta-500 text-white font-bold">Register</button>
+                                </fieldset>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+
 
         </>
     )
