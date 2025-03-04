@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}  
+
 const express = require('express');
 const app = express();
 const PORT = 3000
@@ -8,6 +12,7 @@ app.use(express.json())
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const UserController = require('./controllers/userController');
+const errorHandler = require('./middlewares/errorHandler');
 const genAI = new GoogleGenerativeAI('AIzaSyD7Uc9NvuPDoi7m6wapcYPvcRRRjr8iTWA');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -18,9 +23,7 @@ app.get('/', (req, res) => {
 
 app.post('/register', UserController.register);
 
-app.post('/login', (req,res,next) => {
-    res.send("ini login page")
-})
+app.post('/login', UserController.login);
 
 app.post('/start-game', (req,res,next) => {
     res.send("ini start page")
@@ -48,6 +51,9 @@ app.get('/gemini-generate', async (req, res) => {
 
     }
 })
+
+
+app.use(errorHandler);
 
 
 app.listen(PORT, () => {
