@@ -1,16 +1,16 @@
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
-import Navbar from "../components/Navbar";
 
-function AuthLayout({ onCreateRoom }) {
-  const navigate = useNavigate();
+function AuthLayout() {
+  const nav = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    navigate("/login");
-  };
+  useEffect(() => {
+    if (!localStorage.getItem("access_token")) {
+      nav("/login");
+    }
+  }, []);
   return (
     <>
-      <Navbar onCreateRoom={onCreateRoom} onLogout={handleLogout} />
       <Outlet />
     </>
   );
