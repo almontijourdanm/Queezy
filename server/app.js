@@ -6,6 +6,9 @@ const express = require('express');
 const app = express();
 const PORT = 3000
 
+const cors = require('cors');
+app.use(cors());
+
 const UserController = require('./controllers/userController');
 const errorHandler = require('./middlewares/errorHandler');
 
