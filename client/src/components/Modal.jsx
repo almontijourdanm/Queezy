@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router"
 
-export default function Lobbypage() {
+export default function Modal(isOpen, setIsOpen) {
 
     const navigate = useNavigate()
     const [selectedCategory, setSelectedCategory] = useState('')
     const [roomCode, setRoomCode] = useState('')
     const [rooms, setRooms] = useState(['room1', 'room2', 'room3', 'room4', 'room5', 'room6', 'room7', 'room8', 'room9', 'room10'])
-    const [isOpen, setIsOpen] = useState(false)
+    // const [isOpen, setIsOpen] = useState(false)
 
     const categories = [
         "General Knowledge",

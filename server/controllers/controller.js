@@ -7,7 +7,10 @@ class Controller {
     static async listRooms(req, res, next) {
         try {
             const rooms = await Room.findAll({
-                include: User
+                include: {
+                    model: User,
+                    attributes: { exclude: ['password'] }
+                }
             });
 
             res.status(200).json(rooms);

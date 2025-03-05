@@ -1,6 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}  
+  require('dotenv').config();
+}
 
 const express = require('express');
 const app = express();
@@ -17,6 +17,8 @@ const { createServer } = require("http");
 
 const Controller = require('./controllers/controller');
 const authentication = require('./middlewares/authentication');
+const { verifyToken } = require('./helpers/jwt');
+const SocketController = require('./controllers/socketController');
 
 
 app.use(express.urlencoded({ extended: true }))
@@ -30,24 +32,37 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-    socket.emit("counter/update", lastCountValue)
-  
-    // Listen event dari client
-    // event: counter/update
-    socket.on('counter/set', (newCount) => {
-      console.log(newCount, "<<< ")
-  
-      lastCountValue = newCount
-  
-      // emit to everyone
-      io.emit("counter/update", newCount)
-    })
-  
-    // disconnect -> event bawaan socket.io
-    socket.on('disconnect', () => {
-      console.log(socket.id, "<<< new user disconnect");
-      updateOnlineUsers(io)
-    });
+  socket.on('join-room', async (roomId) => {
+    try {
+
+      const access_token = socket.handshake.auth?.access_token;
+      const payload = verifyToken(access_token);
+
+      const roomPlayers = await SocketController.joinRoom(roomId, payload.id);
+
+      socket.join(roomId);
+
+      io.to(roomId).emit('roomPlayers', roomPlayers);
+    } catch (error) {
+      console.log(error);
+      
+    }
+  });
+
+  // Listen event dari client
+  // event: counter/update
+  // io.to('room1').emit('counter/update', 1);
+
+  socket.on("startGame", (roomId) => {
+    io.to(roomId).emit("gameStarted");
+  })
+
+
+  // disconnect -> event bawaan socket.io
+  socket.on('disconnect', () => {
+    console.log(socket.id, "<<< new user disconnect");
+    // updateOnlineUsers(io)
+  });
 });
 
 
@@ -72,7 +87,7 @@ app.use(errorHandler);
 
 
 httpServer.listen(PORT, () => {
-    console.log(`Server can be access in http://localhost:${PORT}`);
+  console.log(`Server can be access in http://localhost:${PORT}`);
 })
 
 
