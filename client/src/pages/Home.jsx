@@ -7,7 +7,8 @@ import Navbar from "../components/Navbar";
 export default function Home() {
   const nav = useNavigate();
   const { fetchRooms, rooms } = useContext(RoomContext);
-
+  console.log(rooms, 'rooms <<<<<<<<<');
+  
   useEffect(() => {
     fetchRooms();
   }, []);
@@ -31,6 +32,7 @@ export default function Home() {
                 <h2 className="text-xl font-semibold text-blue-600">{room.name}</h2>
                 <p className="text-sm text-gray-600">Host: <span className="font-bold text-black">{room.User.username}</span></p>
                 <p className="text-sm text-gray-600">Status: <span className="font-bold text-green-600">{room.status}</span></p>
+                <p className="text-sm text-gray-600">Category: <span className="font-bold text-green-600">{room.category}</span></p>
                 <button 
                   className="btn btn-sm btn-primary mt-2" 
                   onClick={() => handleJoinRoom(room)}

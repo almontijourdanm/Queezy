@@ -16,7 +16,7 @@ export function RoomProvider({ children }) {
     
     const { data } = await axios({
       method: "GET",
-      url: "http://localhost:3000/rooms",
+      url: "https://gc01.destyan.tech/rooms",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },

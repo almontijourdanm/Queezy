@@ -22,7 +22,7 @@ export default function Loginpage() {
             event.preventDefault()
             let { data } = await axios({
                 method: 'POST',
-                url: 'http://localhost:3000/login',
+                url: 'https://gc01.destyan.tech/login',
                 data: form
             })
 
