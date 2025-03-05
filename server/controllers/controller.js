@@ -1,9 +1,22 @@
-const { Room, RoomPlayer } = require('../models');
+const { User, Room, RoomPlayer } = require('../models');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI('AIzaSyD7Uc9NvuPDoi7m6wapcYPvcRRRjr8iTWA');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 class Controller {
+    static async listRooms(req, res, next) {
+        try {
+            const rooms = await Room.findAll({
+                include: User
+            });
+
+            res.status(200).json(rooms);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static async startGame(req, res, next) {
         try {
             const {

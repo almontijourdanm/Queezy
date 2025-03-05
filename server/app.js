@@ -59,13 +59,14 @@ app.post('/register', UserController.register);
 
 app.post('/login', UserController.login);
 
+
 app.use(authentication)
+
+
+app.get('/rooms', Controller.listRooms);
 
 app.post('/start-game', Controller.startGame)
 
-app.get('/rooms', (req,res,next) => {
-    res.send("ini rooms page")
-})
 
 app.get('/gemini-generate', Controller.generateAI)
 
