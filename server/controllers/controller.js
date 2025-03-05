@@ -1,41 +1,79 @@
-const { Room, RoomPlayer } = require('../models');
+const { User, Room, RoomPlayer } = require('../models');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI('AIzaSyD7Uc9NvuPDoi7m6wapcYPvcRRRjr8iTWA');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 class Controller {
-    static async startGame(req, res, next) {
+    static async listRooms(req, res, next) {
+        try {
+            const rooms = await Room.findAll({
+                include: User
+            });
+
+            res.status(200).json(rooms);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    static async createRoom(req, res, next) {
         try {
             const {
-                category,
-                players
+                category
             } = req.body;
 
-            const questions = await Controller.generateAI(category);
-
             const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+            const questions = await Controller.generateAI(category);
 
             const newRoom = await Room.create({
                 code,
                 questions,
-                HostId: req.user.id
+                HostId: req.user.id,
+                category
             });
 
-            players.forEach(async player => {
-                await RoomPlayer.create({
-                    RoomId: newRoom.id,
-                    UserId: player.id,
-                    score: 0,
-                    answer: []
-                });
+            await RoomPlayer.create({
+                RoomId: newRoom.id,
+                UserId: req.user.id,
+                score: 0,
+                answer: []
             });
 
+            res.status(201).json(newRoom);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async startGame(req, res, next) {
+        try {
+            const {
+                roomId
+            } = req.body;
+            
+            const room = await Room.findByPk(roomId);
+            if (!room) {
+                throw { name: "NotFound", message: "Room not found" };
+            }
+
+            // players.forEach(async player => {
+            //     await RoomPlayer.create({
+            //         RoomId: roomId,
+            //         UserId: player.id,
+            //         score: 0,
+            //         answer: []
+            //     });
+            // });
+
+            room.status = "Playing";
+            await room.save();
 
             res.status(201).json({
-                id: newRoom.id,
-                code: newRoom.code,
-                questions: newRoom.questions,
-                players: players
+                questions: room.questions,
             });
             
         } catch (error) {
@@ -56,11 +94,8 @@ class Controller {
             const cleanResponse = response.response.text().replace(/```json|```/g, "").trim(); 
             const result = JSON.parse(cleanResponse);
             
-
-            // res.status(200).json(result);
-
             return result;
-    
+
         } catch (error) {
             console.log(error);
             

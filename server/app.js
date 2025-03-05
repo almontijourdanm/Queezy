@@ -51,23 +51,21 @@ io.on("connection", (socket) => {
 });
 
 
-app.get('/', (req, res) => {
-    res.send('ini homepage')
-})
-
 app.post('/register', UserController.register);
 
 app.post('/login', UserController.login);
 
+
 app.use(authentication)
 
-app.post('/start-game', Controller.startGame)
 
-app.get('/rooms', (req,res,next) => {
-    res.send("ini rooms page")
-})
+app.get('/rooms', Controller.listRooms);
 
-app.get('/gemini-generate', Controller.generateAI)
+app.post('/rooms', Controller.createRoom);
+
+app.post('/start-game', Controller.startGame);
+
+// app.put('/finish-game')
 
 
 app.use(errorHandler);
