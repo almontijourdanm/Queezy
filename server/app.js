@@ -51,10 +51,6 @@ io.on("connection", (socket) => {
 });
 
 
-app.get('/', (req, res) => {
-    res.send('ini homepage')
-})
-
 app.post('/register', UserController.register);
 
 app.post('/login', UserController.login);
@@ -65,10 +61,11 @@ app.use(authentication)
 
 app.get('/rooms', Controller.listRooms);
 
-app.post('/start-game', Controller.startGame)
+app.post('/rooms', Controller.createRoom);
 
+app.post('/start-game', Controller.startGame);
 
-app.get('/gemini-generate', Controller.generateAI)
+// app.put('/finish-game')
 
 
 app.use(errorHandler);

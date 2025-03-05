@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      RoomPlayer.belongsTo(models.User, { foreignKey: "HostId" });
+      RoomPlayer.belongsTo(models.User, { foreignKey: "UserId" });
       RoomPlayer.belongsTo(models.Room, { foreignKey: "RoomId" })
     }
   }
