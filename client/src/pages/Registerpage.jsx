@@ -17,7 +17,7 @@ export default function Registerpage() {
             event.preventDefault()
             let { data } = await axios({
                 method: 'POST',
-                url: 'http://localhost:3000/register',
+                url: 'https://gc01.destyan.tech/register',
                 data: formData
             })
 

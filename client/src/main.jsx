@@ -7,6 +7,7 @@ import AuthLayout from './pages/AuthLayout.jsx'
 import Home from './pages/Home.jsx'
 import Lobby from './pages/Lobby.jsx'
 import { RoomProvider } from './context/RoomContext.jsx'
+import Gamepage from './pages/Gamepage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <RoomProvider>
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')).render(
         <Route element={<AuthLayout />}>
           <Route path='/' element={<Home />} />
           <Route path='/rooms/:roomId' element={<Lobby />} />
+          <Route path='/start-game/:roomId' element={<Gamepage />} />
         </Route>
       </Routes>
     </BrowserRouter>

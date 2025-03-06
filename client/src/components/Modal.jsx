@@ -1,13 +1,12 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router"
+import Swal from "sweetalert2";
 
-export default function Modal(isOpen, setIsOpen) {
+export default function Modal({ isOpen, setIsOpen }) {
 
-    const navigate = useNavigate()
+    const nav = useNavigate()
     const [selectedCategory, setSelectedCategory] = useState('')
-    const [roomCode, setRoomCode] = useState('')
-    const [rooms, setRooms] = useState(['room1', 'room2', 'room3', 'room4', 'room5', 'room6', 'room7', 'room8', 'room9', 'room10'])
-    // const [isOpen, setIsOpen] = useState(false)
 
     const categories = [
         "General Knowledge",
@@ -17,37 +16,72 @@ export default function Modal(isOpen, setIsOpen) {
         "Entertainment"
     ]
 
-    function handleStartQuiz() {
+    async function handleCreateRoom() {
         if (!selectedCategory) {
-            alert("Please select a category!");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please select a category!',
+            });
             return;
         }
 
-        setIsOpen(false)
-        navigate(`/quiz?category=${selectedCategory}`);
+        try {
+            const { data } = await axios({
+                method: 'POST',
+                url: 'https://gc01.destyan.tech/rooms',
+                data: {
+                    category: selectedCategory
+                },
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+    
+            setIsOpen(false);
+            
+            nav('/rooms/' + data.id);
+            
+        } catch (error) {
+            let message = 'Oops... Something went wrong!';
+            if (error.response) {
+                message = error.response.data.message;
+            }
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: message,
+            });
+        }
+        // navigate(`/quiz?category=${selectedCategory}`);
+    }
+
+    function handleCloseModal() {
+        setIsOpen(false);
     }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             {/* Open Modal Button */}
-            <button
+            {/* <button
                 onClick={() => setIsOpen(true)}
                 className="btn bg-cyan-500 hover:bg-purple-500 text-white font-bold"
             >
                 Open Lobby
-            </button>
+            </button> */}
 
             {/* MODAL */}
             {isOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700 w-96 text-center">
                         {/* CLOSE BUTTON */}
-                        <button
-                            onClick={() => setIsOpen(false)}
+                        <Link
+                            onClick={handleCloseModal}
                             className="btn btn-sm btn-circle absolute right-2 top-2 bg-red-500 text-white"
                         >
                             ✕
-                        </button>
+                        </Link>
 
                         <h1 className="text-2xl font-bold text-cyan-400 drop-shadow-lg mb-4">
                             Select Your Room & Category
@@ -70,12 +104,12 @@ export default function Modal(isOpen, setIsOpen) {
                        
                         {/* START QUIZ BUTTON */}
                         <Link
-                            to='/playgame'
-                            onClick={handleStartQuiz}
+                            // to='/playgame'
+                            onClick={handleCreateRoom}
                             className="btn mt-4 bg-cyan-500 hover:bg-purple-500 text-white font-bold w-full"
                             
                         >
-                            Start Quiz
+                            Create Room
                         </Link>
                     </div>
                 </div>

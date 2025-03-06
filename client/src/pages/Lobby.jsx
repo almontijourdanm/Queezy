@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import socket from "../config/socket";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export default function Lobby() {
-  // const navigate = useNavigate();
+  const nav = useNavigate();
   const params = useParams();
   const [roomPlayers, setRoomPlayers] = useState([]);
 
@@ -50,7 +50,7 @@ export default function Lobby() {
 
       <button 
         className="btn btn-secondary mt-4" 
-        onClick={() => navigate("/")}
+        onClick={() => nav("/start-game/"+params.roomId)}
       >
         Start Game
       </button>

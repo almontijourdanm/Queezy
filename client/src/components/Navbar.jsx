@@ -45,29 +45,7 @@ function Navbar() {
       </div>
 
       {/* Modal Pop-up */}
-      {isModalOpen && (
-        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-        // <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        //   <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        //     <h2 className="text-xl font-bold mb-4 text-blue-600">Create Room</h2>
-        //     <input
-        //       type="text"
-        //       placeholder="Enter Room Name"
-        //       className="input input-bordered w-full mb-4"
-        //       value={roomName}
-        //       onChange={(e) => setRoomName(e.target.value)}
-        //     />
-        //     <div className="flex justify-end">
-        //       <button className="btn btn-error mr-2" onClick={() => setIsModalOpen(false)}>
-        //         Cancel
-        //       </button>
-        //       <button className="btn btn-success" onClick={handleCreateRoom}>
-        //         Create
-        //       </button>
-        //     </div>
-        //   </div>
-        // </div>
-      )}
+      {isModalOpen && <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />}
     </>
   );
 }
