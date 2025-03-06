@@ -11,6 +11,10 @@ class UserController {
                 password
             } = req.body;
 
+            if (!username) {
+                throw { name: "BadRequest", message: "Username is required" }
+            }
+
             const newUser = await User.create({
                 username,
                 email,
