@@ -136,3 +136,146 @@ _401 - Invalid Token_
       "message": String
     }
     ```
+
+### POST /rooms
+#### Description
+- create new room Quiz
+
+#### Request
+- Headers
+    ```json
+    {
+            "Authorization": "Bearer access_token"
+    }
+    ```
+- Body
+    ```json
+    {
+      "category": String
+    }
+    ```
+
+#### Response
+_201 - Created_
+- Body
+    ```json
+    {
+    "id": integer,
+    "code": string,
+    "questions": [
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        }
+    ],
+    "HostId": integer,
+    "category": string,
+    "updatedAt": string,
+    "createdAt": string,
+    "status": string
+    }
+    ```
+
+_401 - Invalid Token_
+- Body
+    ```json
+    {
+      "message": String
+    }
+    ```
