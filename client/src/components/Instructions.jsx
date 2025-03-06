@@ -5,10 +5,6 @@ export default function Instructions() {
 
   return (
     <>
-      <button className="btn btn-secondary" onClick={() => setIsOpen(true)}>
-        Show Instructions
-      </button>
-
       {isOpen && (
         <dialog open className="modal modal-open" aria-hidden={!isOpen} role="dialog">
           <div className="modal-box">

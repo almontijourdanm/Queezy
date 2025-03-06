@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import Modal from "./Modal";
+import Instructions from "./Instructions";
 // import { useRoom } from "../context/RoomContext";
 
 function Navbar() {
   const nav = useNavigate();
   // const { rooms, setRooms } = useRoom();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
   // const [roomName, setRoomName] = useState("");
 
   function handleLogout() {
@@ -24,6 +26,10 @@ function Navbar() {
     setIsModalOpen(true);
   };
 
+  const handleFAQ = () => {
+    setIsInstructionsOpen(true);
+  }
+
   return (
     <>
       <div className="navbar bg-base-100 shadow-md px-4">
@@ -40,12 +46,13 @@ function Navbar() {
             Logout
           </button>
 
-          <a href="/faq" className="btn btn-ghost">FAQ</a>
+          <button className="btn btn-ghost" onClick={handleFAQ}>FAQ</button>
         </div>
       </div>
 
       {/* Modal Pop-up */}
       {isModalOpen && <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />}
+      {isInstructionsOpen && <Instructions isOpen={isInstructionsOpen} setIsOpen={setIsInstructionsOpen} />}
     </>
   );
 }
