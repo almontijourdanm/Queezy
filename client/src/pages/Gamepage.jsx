@@ -24,7 +24,7 @@ export default function Gamepage() {
     const [finsihed, setFinished] = useState(false);
 
     //timer
-    const [timeLeft, setTimeLeft] = useState(2);
+    const [timeLeft, setTimeLeft] = useState(5);
   
 
     const [players, setPlayers] = useState({
@@ -63,7 +63,7 @@ export default function Gamepage() {
                 setFinished(true)
             };
 
-            setTimeLeft(2);
+            setTimeLeft(5);
         }
         
 

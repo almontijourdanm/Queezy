@@ -1,8 +1,18 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import socket from "../config/socket";
 
 export default function Scoreboard() {
 
+    const [scoreBoard, setScoreBoard] = useState([]);
 
+    useEffect(() => {
+        socket.on("scoreBoard", (scoreBoard) => {
+            console.log(scoreBoard, "<<< scoreBoard");
+            
+            setScoreBoard(scoreBoard);
+        })
+    }, []);
 
 
     return (
@@ -36,21 +46,25 @@ export default function Scoreboard() {
                         {/* {players
                             .sort((a, b) => b.score - a.score)
                             .map((player, index) => ( */}
-                                <motion.tr 
-                                    // key={player.id} 
-                                    className="border-b border-gray-700 hover:bg-gray-800 transition-all"
-                                    whileHover={{ scale: 1.05, backgroundColor: "#1e293b" }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    {/* <td className="p-3 font-bold text-purple-400">{index + 1}</td> */}
-                                    <td className="p-3 flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
-                                            {/* {player.name.charAt(0).toUpperCase()} */}
-                                        </div>
-                                        {/* {player.name} */}
-                                    </td>
-                                    {/* <td className="p-3 font-bold text-right text-green-400">{player.score}</td> */}
-                                </motion.tr>
+                                    {scoreBoard.map((player, index) => {
+                                        return (
+                                            <motion.tr 
+                                                key={player.id} 
+                                                className="border-b border-gray-700 hover:bg-gray-800 transition-all"
+                                                whileHover={{ scale: 1.05, backgroundColor: "#1e293b" }}
+                                                transition={{ duration: 0.3 }}
+                                            >
+                                                <td className="p-3 font-bold text-purple-400">{index + 1}</td>
+                                                <td className="p-3 flex items-center gap-3">
+                                                    <div className="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
+                                                        {player.User.username[0].toUpperCase()}
+                                                    </div>
+                                                        {player.User.username}
+                                                </td>
+                                                <td className="p-3 font-bold text-right text-green-400">{player.score}</td>
+                                            </motion.tr>
+                                        )
+                                    })}
                             {/* ))} */}
                     </tbody>
                 </table>

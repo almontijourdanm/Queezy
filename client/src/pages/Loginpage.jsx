@@ -2,6 +2,7 @@ import axios from 'axios'
 import Swal from "sweetalert2"
 import { useNavigate, Link } from 'react-router'
 import { useEffect, useState } from 'react'
+import socket from '../config/socket'
 
 export default function Loginpage() {
 
@@ -27,6 +28,9 @@ export default function Loginpage() {
             })
 
             localStorage.setItem('access_token', data.access_token);
+
+            socket.disconnect();
+            socket.connect();
 
             nav('/')
 
