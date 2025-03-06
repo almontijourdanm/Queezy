@@ -70,7 +70,6 @@ app.post('/register', UserController.register);
 
 app.post('/login', UserController.login);
 
-
 app.use(authentication)
 
 

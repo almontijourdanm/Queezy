@@ -13,6 +13,10 @@ class Controller {
                 }
             });
 
+            if (!rooms) {
+                throw { name: "NotFound", message: "Rooms not found" };
+            }
+
             res.status(200).json(rooms);
 
         } catch (error) {
