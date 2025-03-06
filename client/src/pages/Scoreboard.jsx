@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import socket from "../config/socket";
+import { Link } from "react-router";
 
 export default function Scoreboard() {
 
@@ -27,7 +28,7 @@ export default function Scoreboard() {
             </motion.h1>
 
             <motion.div 
-                className="bg-gray-900 bg-opacity-90 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-lg border border-gray-700"
+                className="flex flex-col bg-gray-900 bg-opacity-90 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-lg border border-gray-700"
                 initial={{ opacity: 0, scale: 0.8 }} 
                 animate={{ opacity: 1, scale: 1 }} 
                 transition={{ duration: 0.6 }}
@@ -68,6 +69,8 @@ export default function Scoreboard() {
                             {/* ))} */}
                     </tbody>
                 </table>
+
+                <Link to={'/'} className="btn btn-error mt-5">Close</Link>
             </motion.div>
         </div>
     );

@@ -33,12 +33,15 @@ export default function Home() {
                 <p className="text-sm text-gray-600">Host: <span className="font-bold text-black">{room.User.username}</span></p>
                 <p className="text-sm text-gray-600">Status: <span className="font-bold text-green-600">{room.status}</span></p>
                 <p className="text-sm text-gray-600">Category: <span className="font-bold text-green-600">{room.category}</span></p>
-                <button 
-                  className="btn btn-sm btn-primary mt-2" 
-                  onClick={() => handleJoinRoom(room)}
-                >
-                  Join Room
-                </button>
+                
+                {room.status === 'Waiting' && (
+                  <button 
+                    className="btn btn-sm btn-primary mt-2" 
+                    onClick={() => handleJoinRoom(room)}
+                  >
+                    Join Room
+                  </button>                  
+                )}
               </div>
             ))}
           </div>
