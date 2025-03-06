@@ -18,18 +18,17 @@ export default function Instructions() {
 
               <section>
                 <h2 className="text-lg font-semibold">❓ Questions & Answers</h2>
-                <p>The game consists of <span className="font-bold">20 questions</span>. Each question has <span className="font-bold">4 answer choices</span>.</p>
+                <p>The game consists of <span className="font-bold">10 questions</span>. Each question has <span className="font-bold">4 answer choices</span>.</p>
               </section>
 
               <section>
                 <h2 className="text-lg font-semibold">⏳ Time Limit</h2>
-                <p>Players have <span className="font-bold">30 seconds</span> to answer each question.</p>
+                <p>Players have <span className="font-bold">5 seconds</span> to answer each question.</p>
               </section>
 
               <section>
                 <h2 className="text-lg font-semibold">⚡ Scoring System</h2>
                 <ul className="list-disc pl-5">
-                  <li>The <span className="font-bold">fastest player</span> to answer correctly earns the point.</li>
                   <li>Wrong answers earn <span className="font-bold">no points</span>.</li>
                   <li>The player with the <span className="font-bold">highest score</span> at the end wins!</li>
                 </ul>
