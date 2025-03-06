@@ -40,3 +40,50 @@ _400 - Bad Request_
       "message": String
     }
     ```
+
+### POST /login
+#### Description
+- login to website with access_token
+
+#### Request
+
+- Headers
+    ```json
+    {
+            "Content-Type": "application/x-www-form-urlencoded"
+    }
+    ```
+
+
+- Body
+    ```json
+    {
+      "email": String,
+      "password": String
+    }
+    ```
+#### Response
+_200 - OK_
+
+- Headers
+    ```json
+    {
+            "Content-Type": "application/x-www-form-urlencoded"
+    }
+    ```
+
+- Body
+    ```json
+    { 
+      "access_token": string,
+    }
+    ```
+
+_400 - Bad Request_
+- Body
+    ```json
+    {
+      "message": String
+    }
+    ```
+
