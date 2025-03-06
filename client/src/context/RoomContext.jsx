@@ -12,6 +12,11 @@ export default RoomContext;
 export function RoomProvider({ children }) {
   const [rooms, setRooms] = useState([]);
 
+  const [activeRoom, setActiveRoom] = useState({});
+  const [questions, setQuestions] = useState([])
+  
+
+
   async function fetchRooms() {
     
     const { data } = await axios({
@@ -31,7 +36,11 @@ export function RoomProvider({ children }) {
       value={{ 
         rooms, 
         setRooms,
-        fetchRooms
+        fetchRooms,
+        activeRoom,
+        setActiveRoom,
+        questions,
+        setQuestions
       }}
     >
       {children}

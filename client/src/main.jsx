@@ -8,6 +8,7 @@ import Home from './pages/Home.jsx'
 import Lobby from './pages/Lobby.jsx'
 import { RoomProvider } from './context/RoomContext.jsx'
 import Gamepage from './pages/Gamepage.jsx'
+import Scoreboard from './pages/Scoreboard.jsx'
 
 createRoot(document.getElementById('root')).render(
   <RoomProvider>
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='/' element={<Home />} />
           <Route path='/rooms/:roomId' element={<Lobby />} />
           <Route path='/start-game/:roomId' element={<Gamepage />} />
+          <Route path='/scoreboard/:roomId' element={<Scoreboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,8 +1,5 @@
-import axios from 'axios'
-import { useState } from 'react'
-import { useNavigate } from 'react-router'
 
-export default function Questioncard({ question,options,onAnswer }) {
+export default function Questioncard({ question,options,onAnswer, selected }) {
 
     // const [selected,setSelected] = useState(null)
 
@@ -22,6 +19,7 @@ export default function Questioncard({ question,options,onAnswer }) {
                         key={index}
                         onClick={() => onAnswer(option)}
                         className="btn btn-primary w-full"
+                        disabled={selected ? true : false}
                     >
                         {option}
                     </button>

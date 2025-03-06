@@ -3,138 +3,125 @@ import { useLocation, useNavigate, useParams, } from "react-router"
 // import questionsData from '../helpers/Quizdata'
 import QuestionCard from "../components/questioncard";
 import RoomContext from "../context/RoomContext";
+import socket from "../config/socket";
+import { motion } from "framer-motion";
 
 
 
 export default function Gamepage() {
     const nav = useNavigate();
     const params = useParams();
-    
-    const { fetchRooms, rooms } = useContext(RoomContext);
-    const room = rooms.find(room => room.roomId === params.id);
 
-    console.log(room, 'room <<<<<<<<<');
-    
-    
-    const [questions, setQuestions] = useState([])
+    // const { fetchRooms, rooms } = useContext(RoomContext);
+    // const room = rooms.find(room => room.roomId === params.id);
+
+    // console.log(room, 'room <<<<<<<<<');
+
+    const { activeRoom: room, questions } = useContext(RoomContext);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [score, setScore] = useState(0)
-    const [loading, setLoading] = useState(true)
-    
-    useEffect(() => {
-        fetchRooms();
+    const [loading, setLoading] = useState(false)
+    const [finsihed, setFinished] = useState(false);
 
-        setQuestions(room?.questions);
-    }, []);
+    //timer
+    const [timeLeft, setTimeLeft] = useState(2);
+  
 
-    // const questionsData = room.questions;
-    // {
-    //     "General Knowledge": [
-    //         {
-    //             question: "What is the capital of France?",
-    //             options: ["Berlin", "Madrid", "Paris", "Lisbon"],
-    //             correct_answer: "Paris",
-    //         },
-    //         {
-    //             question: "Who wrote 'Hamlet'?",
-    //             options: ["Shakespeare", "Hemingway", "Tolstoy", "Orwell"],
-    //             correct_answer: "Shakespeare",
-    //         },
-    //     ],
-    //     "Science": [
-    //         {
-    //             question: "What planet is known as the Red Planet?",
-    //             options: ["Earth", "Mars", "Jupiter", "Venus"],
-    //             correct_answer: "Mars",
-    //         },
-    //         {
-    //             question: "What is the chemical symbol for water?",
-    //             options: ["O2", "H2O", "CO2", "NaCl"],
-    //             correct_answer: "H2O",
-    //         },
-    //     ],
-    // };
-
-
-    // const location = useLocation()
-    // const queryParams = new URLSearchParams(location.search)
-    // const category = queryParams.get('category') || "General Knowledge"
-    // // const room = queryParams.get('room') || "room1"
-
-
-    // useEffect(() => { 
-    //     if(questionsData[category]){
-    //         setQuestions(questionsData[category])
-    //     } else {
-    //         alert ('invalid category! redirecting to lobby...')
-    //         nav('/lobby')
-    //     }
-    // }, [category,nav])  
-
-
-    // async function fetchQuestions() {
-    //     try {
-    //         let { data } = await axios({
-    //             method: 'GET',
-    //             url: `http://localhost:3000/gemini-generat`,
-    //             headers: {
-    //                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
-    //             }
-    //         })
-
-    //         setQuestions(data)
-    //         setLoading(false)
-
-    //     } catch (error) {
-    //         console.log(error, "ini error<><><");
-
-    //     }
-
-    // }
-
-    // fetchQuestions()
-
-    // useEffect(() => {
-    //     fetchQuestions()
-    // }
-    //     , [category])
+    const [players, setPlayers] = useState({
+        questions: new Array(10).fill(""),
+        answer: new Array(10).fill("")
+    })
 
     function handleAnswer(selectedOption) {
-
+        setLoading(true);
         if (selectedOption === questions[currentQuestionIndex].correct_answer) {
-            setScore(score + 1)
-            alert("Correct Answer!")
-
-        } else {
-            alert("Wrong Answer!")
+            setScore(score + 10)
         }
 
-        setTimeout(() => {
-            if (currentQuestionIndex < questions.length - 1) {
-                setCurrentQuestionIndex(currentQuestionIndex + 1)
-            }
-            else {
-                alert(`Game Over! Your Score: ${score + 1} / ${questions.length}`)
-                nav('/lobby')
-            }
-        }, 1000)
+        const newQuestions = structuredClone(players.questions)
+        newQuestions[currentQuestionIndex] = questions[currentQuestionIndex].question
+        
+
+        const newAnswers = structuredClone(players.answer)
+        newAnswers[currentQuestionIndex] = selectedOption
+
+        setPlayers({ questions: newQuestions, answer: newAnswers });
+
+        setLoading(false);
     }
 
-    // if (loading) {
-    //     return (
-    //         <div className="flex items-center justify-center min-h-screen text-xl font-bold text-cyan-400">
-    //             Loading Quiz...
-    //         </div>
-    //     )
-    // }
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft((prevTime) => prevTime - 1);
+        }, 1000);
+    
+        
+        if (timeLeft <= 0) {
+            if (currentQuestionIndex < questions.length - 1) {
+                setCurrentQuestionIndex(currentQuestionIndex + 1)
+            } else if (currentQuestionIndex === questions.length - 1) {
+                setFinished(true)
+            };
+
+            setTimeLeft(2);
+        }
+        
+
+        return () => clearInterval(timer);
+
+    }, [timeLeft])
+
+    useEffect(() => {
+        // if (players.questions.length === questions.length && players.answer.length === questions.length) {
+        if (finsihed) {
+            console.log(players, "<<< players");
+
+            socket.emit("finishGame", { roomId: params.roomId, players });
+
+            nav('/scoreboard/'+params.roomId);
+            
+            // alert("Quiz Finished!")
+            // nav('/lobby')
+        }
+    }, [players, finsihed])
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen text-xl font-bold text-cyan-400">
+                Loading Quiz...
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-6">
             <h1 className="text-3xl font-bold text-cyan-400 mb-4">
                 Room: {room.code} | Category: {room.category}
             </h1>
+            <div className="mb-4 flex justify-center">
+                <motion.h2
+                className="text-2xl font-bold text-center"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                >
+                </motion.h2>
+
+                {/* Timer Animation */}
+                <motion.div
+                className="flex justify-center items-center mt-4"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ repeat: Infinity, duration: 1 }}
+                >
+                <span className="countdown font-mono text-4xl text-primary">
+                    {timeLeft}
+                </span>
+                <span className="ml-2 text-lg text-gray-600">seconds left</span>
+                </motion.div>
+            </div>
             {questions?.length > 0 && (
                 <QuestionCard
+                    selected={players.answer[currentQuestionIndex]}
                     question={questions[currentQuestionIndex].question}
                     options={questions[currentQuestionIndex].options}
                     correctAnswer={questions[currentQuestionIndex].correct_answer}

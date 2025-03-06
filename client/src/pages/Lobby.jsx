@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import socket from "../config/socket";
 import { useNavigate, useParams } from "react-router";
+import RoomContext from "../context/RoomContext";
 
 export default function Lobby() {
   const nav = useNavigate();
   const params = useParams();
   const [roomPlayers, setRoomPlayers] = useState([]);
+
+  const { setActiveRoom, setQuestions } = useContext(RoomContext);
 
   // Hardcoded user list
   useEffect(() => {
@@ -20,6 +23,20 @@ export default function Lobby() {
       socket.off("roomPlayers");
     };
   }, []);
+
+  
+  useEffect(() => {
+    socket.on("gameStarted", (room) => {
+        setActiveRoom(room);
+        setQuestions(room.questions);
+
+        nav("/start-game/"+params.roomId);
+    });
+
+    return () => {
+      socket.off("gameStarted");
+    };
+}, []);
 
   // const currentUser = "User1"; // Hardcoded user login
 
@@ -50,7 +67,9 @@ export default function Lobby() {
 
       <button 
         className="btn btn-secondary mt-4" 
-        onClick={() => nav("/start-game/"+params.roomId)}
+        onClick={() => {
+          socket.emit("startGame", params.roomId);
+        }}
       >
         Start Game
       </button>
