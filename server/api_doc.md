@@ -279,3 +279,138 @@ _401 - Invalid Token_
       "message": String
     }
     ```
+
+### POST /start-game
+#### Description
+- create game-play
+
+#### Request
+- Headers
+    ```json
+    {
+            "Authorization": "Bearer access_token"
+    }
+    ```
+- Body
+    ```json
+    {
+    "questions": [
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        },
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        }
+    ]
+    }
+    ```
+
+_404 - Not Found_
+- Body
+    ```json
+    {
+      "message": String
+    }
+    ```
+
+_401 - Invalid Token_
+- Body
+    ```json
+    {
+      "message": String
+    }
+    ```
