@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
       socket.join(roomId);
 
       io.to(roomId).emit('roomPlayers', roomPlayers);
+
     } catch (error) {
       console.log(error);
       
@@ -53,9 +54,42 @@ io.on("connection", (socket) => {
   // event: counter/update
   // io.to('room1').emit('counter/update', 1);
 
-  socket.on("startGame", (roomId) => {
-    io.to(roomId).emit("gameStarted");
+  socket.on("startGame", async (roomId) => {
+    try {
+      const room = await SocketController.startGame(roomId);
+      
+      io.to(roomId).emit("gameStarted", room);
+      
+    } catch (error) {
+      
+    }
   })
+
+  socket.on("finishGame", async (data) => {
+    try {
+      console.log(data, "<<< data finish game");
+      let totalScore = 0;
+      
+      const room = await SocketController.findRoomByPk(data.roomId);
+      room.questions.forEach(async (question, index) => {
+        if (question.correct_answer === data.players.answer[index]) {
+          totalScore += 10;
+        }
+      });
+
+      const access_token = socket.handshake.auth?.access_token;
+      const payload = verifyToken(access_token);
+
+      const scoreBoard = await SocketController.finishedGame(data.roomId, payload.id, totalScore, data);
+      
+      io.to(data.roomId).emit("scoreBoard", scoreBoard);
+
+      // const room = await SocketController.finishGame(data);
+      // console.log(room, "<<< room finish game");
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
 
   // disconnect -> event bawaan socket.io
