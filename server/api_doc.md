@@ -87,3 +87,52 @@ _400 - Bad Request_
     }
     ```
 
+### GET /rooms
+#### Description
+- get the room Quiz
+
+#### Request
+- Headers
+    ```json
+    {
+            "Authorization": "Bearer access_token"
+    }
+    ```
+
+#### Response
+_200 - OK_
+- Body
+    ```json
+    { 
+      "id": integer,
+      "code": string,
+      "HostId": integer,
+      "questions": [
+        {
+            "options": [
+                string,
+                string,
+                string,
+                string
+            ],
+            "question": string,
+            "correct_answer": string
+        }
+      ]
+    }
+    ```
+
+_404 - Not Found_
+- Body
+    ```json
+    {
+      "message": String
+    }
+    ```
+_401 - Invalid Token_
+- Body
+    ```json
+    {
+      "message": String
+    }
+    ```
