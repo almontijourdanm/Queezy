@@ -1,3 +1,30 @@
+# Queezy 🎮🧠
+
+A web-based word game platform that generates quiz questions using Gemini AI. Fun, dynamic, and customizable.
+
+## 🚀 Tech Stack
+
+- **Frontend:** React JS, Redux, HTML/CSS
+- **Backend:** Express JS, PostgreSQL
+- **Others:** Gemini AI, 3rd Party APIs
+
+## 📸 Screenshots
+
+![Queezy Screenshot](link-to-your-screenshot.png)
+
+## ✨ Features
+
+- Quiz category selection
+- AI-generated questions
+- Answer validation using external APIs
+- Game state managed with Redux
+
+## 🧠 Lessons Learned
+
+This project helped me explore how AI can enhance interactive content, and how Redux improves game logic state management.
+
+
+
 # Queezy
 ## 📖 How to Play Instructions
 
