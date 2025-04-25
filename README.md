@@ -23,9 +23,6 @@ A web-based word game platform that generates quiz questions using Gemini AI. Fu
 
 This project helped me explore how AI can enhance interactive content, and how Redux improves game logic state management.
 
-
-
-# Queezy
 ## 📖 How to Play Instructions
 
 This document outlines the game instructions for an interactive quiz application. Below are the details of the gameplay mechanics.
